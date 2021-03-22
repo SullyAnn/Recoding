@@ -3,23 +3,36 @@ var params = {
     nbPoints: 45,
     scale: 0.1,
     translate: 8,
+    noiseScale: 1,
     Download_Image: function () { return save(); },
 };
 gui.add(params, "nbPoints", 0, 200, 1);
 gui.add(params, "scale", 0, 2, 0.05);
 gui.add(params, "translate", 0, 50, 1);
+gui.add(params, "noiseScale", 0, 200, 1);
 gui.add(params, "Download_Image");
 function draw() {
     background('white');
     var xPoint = 0;
     var yPoint = 0;
     var angle = 360 / params.nbPoints;
-    var radius = width / 1.5;
+    var radius = width / 2;
+    randomSeed(0);
+    function distortLine(x1, y1, x2, y2) {
+        var step = 0.01;
+        for (var i = 0; i < 1; i += step) {
+            var x_start = lerp(x1, x2, i);
+            var y_start = lerp(x1, x2, i);
+            var x_end = lerp(x1, x2, i + step);
+            var y_end = lerp(y1, y2, i + step);
+            line(x_start + noise(x_start, y_start), y_start, x_end, y_end);
+        }
+    }
     function drawCircle() {
         for (var i = 0; i < 360; i = i + angle) {
             var x = cos(radians(i)) * width;
             var y = sin(radians(i)) * width;
-            line(radius, radius, x * width, y * width);
+            distortLine(radius, radius, x * width, y * width);
         }
     }
     function repeat() {
