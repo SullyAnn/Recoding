@@ -22,11 +22,13 @@ gui.add(params, "Download_Image")
 
 function draw() {
     background('white');
+    randomSeed(0);
+    
     let xPoint = 0;
     let yPoint = 0;
     const angle = 360 / params.nbPoints; // 22.5°
     const radius =  width/2;
-    randomSeed(0);
+   
     		
     function drawCircle() {
         for (let i = 0; i < 360; i = i + angle) {
